@@ -681,8 +681,10 @@ int X509_policy_check(X509_POLICY_TREE **ptree, int *pexplicit_policy,
     } else {
         *pexplicit_policy = 1;
         /* Tree empty and requireExplicit True: Error */
-        if (init_ret & X509_PCY_TREE_EMPTY)
+        if (init_ret & X509_PCY_TREE_EMPTY) {
+            X509_policy_tree_free(tree);
             return X509_PCY_TREE_FAILURE;
+        }
     }
 
     ret = tree_evaluate(tree);
